@@ -1,0 +1,10 @@
+:root {
+    --background: #ffffff;
+    --surface: #ffffff;
+    --text: #24292f;
+    --secondary-text: #656d76;
+    --border: #d8dee4;
+    --accent: #0969da;
+    --hover: #f6f8fa;
+    --shadow: rgba(0,0,0,.04);
+}

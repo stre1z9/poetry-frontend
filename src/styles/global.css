@@ -200,30 +200,38 @@ nav {
     font-size: .9rem;
 }
 .poem {
-    max-width: 720px;
-    margin: 80px auto;
+    max-width: 900px;
+    margin: 60px auto;
 }
+
 .poem-title {
-    font-size: 2.8rem;
-    line-height: 1.2;
-    letter-spacing: -1px;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
+
 .poem-description {
-    color: var(--secondary-text);
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    color: #777;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
 }
+
 .poem-date {
-    color: var(--secondary-text);
+    color: #999;
     font-size: .9rem;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
+
 .poem-content {
-    white-space: pre-wrap;
-    font-size: 1.15rem;
-    line-height: 2.1;
-    letter-spacing: .01em;
+    border: 1px solid #e4e4e4;
+    border-radius: 14px;
+    padding: 32px;
+    background: #fff;
+
+    white-space: pre-line;
+
+    line-height: 1.7;
+    font-size: 1.08rem;
 }
 .poem-not-found {
     text-align: center;

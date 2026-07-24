@@ -18,7 +18,7 @@ function AdminPage() {
 
             const data = await getAdminPoems();
 
-            setPoems(data.content);
+            setPoems(data);
 
         } catch (error) {
 

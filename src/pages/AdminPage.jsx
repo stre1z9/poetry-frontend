@@ -59,7 +59,8 @@ function AdminPage() {
     if (loading) {
         return <h3>Загрузка...</h3>;
     }
-
+    console.log("poems:", poems);
+    console.log("isArray:", Array.isArray(poems));
     return (
 
         <>

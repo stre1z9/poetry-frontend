@@ -33,7 +33,7 @@ export async function getAdminPoems(page = 0) {
         }
     });
 
-    return response.data;
+    return response.data.content;
 }
 export async function deletePoem(id) {
     await api.delete(`/admin/poems/${id}`);

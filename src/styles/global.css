@@ -12,6 +12,11 @@
 }
 
 
+html {
+    scroll-behavior: smooth;
+}
+
+
 body {
 
     font-family: "Inter", sans-serif;
@@ -54,7 +59,6 @@ img {
    Layout
 =========================== */
 
-
 .container {
 
     width: min(100% - 40px, 1100px);
@@ -64,11 +68,9 @@ img {
 }
 
 
-
 /* ===========================
    Header
 =========================== */
-
 
 .site-header {
 
@@ -81,7 +83,7 @@ img {
 
 .header-content {
 
-    height: 70px;
+    min-height: 70px;
 
     display: flex;
 
@@ -97,6 +99,8 @@ img {
     font-size: 1.4rem;
 
     font-weight: 700;
+
+    letter-spacing: -0.5px;
 
 }
 
@@ -126,19 +130,17 @@ nav {
 }
 
 
-
 /* ===========================
-   Home
+   Home / Hero
 =========================== */
-
 
 .hero {
 
     max-width: 760px;
 
-    margin: 90px auto 80px;
+    margin: 80px 0 60px;
 
-    text-align: center;
+    text-align: left;
 
 }
 
@@ -159,160 +161,606 @@ nav {
 
 
 .hero-description {
+
+    max-width: 700px;
+
     color: var(--secondary-text);
-    font-size: 1.15rem;
+
+    font-size: 1.1rem;
+
     line-height: 1.8;
+
 }
+
+
 .section-title {
+
     font-size: 2rem;
+
     font-weight: 700;
+
     margin-bottom: 30px;
+
 }
+
+
+/* ===========================
+   Poems Grid
+=========================== */
+
 .poem-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    grid-auto-rows: 170px;
+
+    gap: 16px;
+
+    margin-top: 60px;
+
 }
+
+
+/* ===========================
+   Poem Card
+=========================== */
+
 .poem-card {
-    display: block;
-    padding: 26px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    transition: border-color .2s ease;
-}
-.poem-card:hover {
-    border-color: var(--text);
-}
-.poem-card-title {
-    font-size: 1.7rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-.poem-card-description {
-    color: var(--secondary-text);
-    line-height: 1.7;
-}
-.poem-card-footer {
-    margin-top: 20px;
+
     display: flex;
-    justify-content: flex-end;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 28px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    color: var(--text);
+
+    transition:
+            background-color .2s ease,
+            border-color .2s ease,
+            transform .2s ease;
+
+}
+
+
+.poem-card:hover {
+
+    color: var(--text);
+
+    background: var(--background);
+
+    border-color: var(--text);
+
+    transform: translateY(-3px);
+
+}
+
+
+.poem-card-title {
+
+    margin: 0;
+
+    font-size: 1.7rem;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+.poem-card-description {
+
+    margin-top: 14px;
+
     color: var(--secondary-text);
+
+    line-height: 1.6;
+
+}
+
+
+.poem-card-footer {
+
+    margin-top: auto;
+
+    padding-top: 25px;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    color: var(--secondary-text);
+
     font-size: .9rem;
+
 }
+
+
+/* ===========================
+   Grid Sizes
+=========================== */
+
+.poem-card:nth-child(1) {
+
+    grid-column: span 7;
+
+    grid-row: span 2;
+
+}
+
+
+.poem-card:nth-child(2) {
+
+    grid-column: span 5;
+
+    grid-row: span 2;
+
+}
+
+
+.poem-card:nth-child(3) {
+
+    grid-column: span 4;
+
+    grid-row: span 2;
+
+}
+
+
+.poem-card:nth-child(4) {
+
+    grid-column: span 8;
+
+    grid-row: span 2;
+
+}
+
+
+.poem-card:nth-child(5) {
+
+    grid-column: span 12;
+
+    grid-row: span 2;
+
+}
+
+
+/* ===========================
+   All Poems Link
+=========================== */
+
+.all-poems-link {
+
+    display: block;
+
+    margin-top: 16px;
+
+    padding: 24px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    color: var(--text);
+
+    text-align: left;
+
+    transition:
+            background-color .2s ease,
+            border-color .2s ease;
+
+}
+
+
+.all-poems-link:hover {
+
+    color: var(--text);
+
+    background: var(--background);
+
+    border-color: var(--text);
+
+}
+
+
+.all-poems-link::after {
+
+    content: "→";
+
+    float: right;
+
+    color: var(--secondary-text);
+
+}
+
+
+/* ===========================
+   Poem Page
+=========================== */
+
 .poem {
+
     max-width: 900px;
-    margin: 60px auto;
+
+    margin: 70px auto;
+
 }
+
 
 .poem-title {
-    font-size: 2.5rem;
+
+    font-size: 2.7rem;
+
     font-weight: 700;
+
+    letter-spacing: -1px;
+
+    line-height: 1.2;
+
     margin-bottom: 12px;
+
 }
+
 
 .poem-description {
-    color: #777;
+
+    color: var(--secondary-text);
+
     margin-bottom: 10px;
+
     font-size: 1.05rem;
+
 }
+
 
 .poem-date {
-    color: #999;
+
+    color: var(--secondary-text);
+
     font-size: .9rem;
-    margin-bottom: 30px;
+
+    margin-bottom: 25px;
+
 }
 
+
 .poem-content {
-    border: 1px solid #e4e4e4;
-    padding: 32px;
-    background: #fff;
+
+    border: 1px solid var(--border);
+
+    padding: 30px;
+
+    background: var(--surface);
 
     white-space: pre-line;
 
-    line-height: 1.7;
-    font-size: 1.08rem;
+    line-height: 1.55;
+
+    font-size: 1.05rem;
+
 }
+
+
+/* ===========================
+   Poem Not Found
+=========================== */
+
 .poem-not-found {
+
     text-align: center;
+
     padding: 100px 0;
+
 }
+
+
 .poem-not-found h1 {
+
     font-size: 4rem;
+
     margin-bottom: 15px;
+
 }
+
+
 .poem-not-found p {
+
     color: var(--secondary-text);
-}
-.all-poems-link {
-    display: block;
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px solid #dee2e6;
-    color: #212529;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.2s ease;
+
 }
 
-.all-poems-link:hover {
-    background-color: #f8f9fa;
-}
+
+/* ===========================
+   Editor
+=========================== */
+
 .editor {
+
     max-width: 900px;
+
     margin: 70px auto;
+
     padding: 40px;
+
     background: var(--surface);
+
     border: 1px solid var(--border);
-}
-.editor-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 30px;
-}
-.editor textarea {
-    resize: vertical;
-}
-.editor .form-control {
-    padding: 12px 14px;
-    border-radius: 0;
-    border: 1px solid var(--border);
-    background: var(--background);
-}
-.editor .form-control:focus {
-    box-shadow: none;
-    border-color: var(--text);
-}
-.editor .btn {
-    min-width: 160px;
-    border-radius: 0;
-}
-.btn {
-    border-radius: 0 !important;
+
 }
 
-@media(max-width: 700px) {
+
+.editor-title {
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin-bottom: 30px;
+
+}
+
+
+.editor textarea {
+
+    resize: vertical;
+
+}
+
+
+.editor .form-control {
+
+    padding: 12px 14px;
+
+    border-radius: 0;
+
+    border: 1px solid var(--border);
+
+    background: var(--background);
+
+}
+
+
+.editor .form-control:focus {
+
+    box-shadow: none;
+
+    border-color: var(--text);
+
+}
+
+
+.editor .btn {
+
+    min-width: 160px;
+
+    border-radius: 0;
+
+}
+
+
+.btn {
+
+    border-radius: 0 !important;
+
+}
+
+
+/* ===========================
+   Tablet
+=========================== */
+
+@media (max-width: 900px) {
+
+    .poem-list {
+
+        grid-template-columns: repeat(6, 1fr);
+
+    }
+
+
+    .poem-card:nth-child(1),
+    .poem-card:nth-child(2),
+    .poem-card:nth-child(3),
+    .poem-card:nth-child(4) {
+
+        grid-column: span 3;
+
+    }
+
+
+    .poem-card:nth-child(5) {
+
+        grid-column: span 6;
+
+    }
+
+}
+
+
+/* ===========================
+   Mobile
+=========================== */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        width: min(100% - 30px, 1100px);
+
+    }
+
+
+    /* Header */
+
     .header-content {
-        height: auto;
+
         padding: 20px 0;
+
         flex-direction: column;
+
         gap: 20px;
+
     }
+
+
     nav {
+
         gap: 20px;
+
     }
+
+
+    /* Hero */
+
     .hero {
-        margin-top: 50px;
+
+        margin: 50px 0 40px;
+
     }
+
+
     .hero-title {
+
         font-size: 2.4rem;
+
     }
+
+
+    .hero-description {
+
+        font-size: 1rem;
+
+        line-height: 1.7;
+
+    }
+
+
+    /* Poems */
+
+    .poem-list {
+
+        grid-template-columns: 1fr;
+
+        grid-auto-rows: auto;
+
+        gap: 12px;
+
+        margin-top: 40px;
+
+    }
+
+
+    .poem-card:nth-child(1),
+    .poem-card:nth-child(2),
+    .poem-card:nth-child(3),
+    .poem-card:nth-child(4),
+    .poem-card:nth-child(5) {
+
+        grid-column: span 1;
+
+        grid-row: span 1;
+
+        min-height: 220px;
+
+    }
+
+
+    .poem-card {
+
+        padding: 24px;
+
+    }
+
+
+    .poem-card-title {
+
+        font-size: 1.5rem;
+
+    }
+
+
+    /* Poem */
+
     .poem {
-        margin: 50px auto;
+
+        margin: 50px 0;
+
     }
+
+
     .poem-title {
+
         font-size: 2.1rem;
+
     }
+
+
+    .poem-content {
+
+        padding: 22px;
+
+        line-height: 1.5;
+
+        font-size: 1rem;
+
+    }
+
+
+    /* Editor */
+
     .editor {
+
+        margin: 50px 0;
+
         padding: 25px;
+
     }
+
+}
+
+
+/* ===========================
+   Small Mobile
+=========================== */
+
+@media (max-width: 400px) {
+
+    .hero-title {
+
+        font-size: 2.1rem;
+
+    }
+
+
+    .poem-card {
+
+        padding: 20px;
+
+    }
+
+
+    .poem-card-title {
+
+        font-size: 1.35rem;
+
+    }
+
+
+    .poem-content {
+
+        padding: 18px;
+
+    }
+
 }

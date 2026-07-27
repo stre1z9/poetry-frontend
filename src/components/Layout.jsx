@@ -21,7 +21,7 @@ function Layout() {
                         <nav className="navigation">
 
                             <Link
-                                to="/"
+                                to="/poems"
                                 className="nav-link-custom"
                             >
                                 Стихотворения

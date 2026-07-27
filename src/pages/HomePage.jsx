@@ -70,7 +70,7 @@ function HomePage() {
 
             <section>
 
-                <div className="poem-list">
+                <div className="home-poem-grid">
 
                     {latestPoems.map(poem => (
 

@@ -6,12 +6,14 @@ import AdminPage from "./pages/AdminPage";
 import EditPoemPage from "./pages/EditPoemPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AllPoems from "./pages/AllPoems.jsx";
 
 function App() {
     return (
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/poems" element={<AllPoems />} />
                 <Route path="/poem/:slug" element={<PoemPage />} />
             </Route>
             <Route

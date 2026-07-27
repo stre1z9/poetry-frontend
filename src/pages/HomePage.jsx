@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import PoemCard from "../components/PoemCard";
 import { getPoems } from "../services/poemService";
@@ -37,16 +38,14 @@ function HomePage() {
     if (loading) {
 
         return (
-
             <div className="text-center py-5">
-
                 Загрузка...
-
             </div>
-
         );
 
     }
+
+    const latestPoems = poems.slice(0, 5);
 
     return (
 
@@ -55,9 +54,7 @@ function HomePage() {
             <section className="hero">
 
                 <h1 className="hero-title">
-
                     Poetry.
-
                 </h1>
 
                 <p className="hero-description">
@@ -70,11 +67,12 @@ function HomePage() {
 
             </section>
 
+
             <section>
 
                 <div className="poem-list">
 
-                    {poems.map(poem => (
+                    {latestPoems.map(poem => (
 
                         <PoemCard
                             key={poem.id}
@@ -84,6 +82,16 @@ function HomePage() {
                     ))}
 
                 </div>
+
+
+                <Link
+                    to="/poems"
+                    className="all-poems-link"
+                >
+
+                    Все стихотворения
+
+                </Link>
 
             </section>
 

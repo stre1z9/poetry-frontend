@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getPoem } from "../services/poemService";
 
@@ -54,9 +54,7 @@ function PoemPage() {
                 <h1>404</h1>
 
                 <p>
-
                     Стихотворение не найдено.
-
                 </p>
 
             </div>
@@ -68,31 +66,54 @@ function PoemPage() {
     return (
 
         <article className="poem">
-            <Link to={`/poems`} className="back">← Назад</Link>
+
+            <Link
+                to="/poems"
+                className="back"
+            >
+                ← Назад
+            </Link>
+
             <h1 className="poem-title">
-
                 {poem.title}
-
             </h1>
 
             {poem.description && (
 
                 <p className="poem-description">
-
                     {poem.description}
-
                 </p>
 
             )}
+
             {poem.createdAt && (
 
                 <p className="poem-date">
-
                     {new Date(poem.createdAt).toLocaleDateString("ru-RU")}
-
                 </p>
 
             )}
+
+            {poem.tags && poem.tags.length > 0 && (
+
+                <div className="poem-tags">
+
+                    {poem.tags.map(tag => (
+
+                        <Link
+                            key={tag.id}
+                            to={`/tag/${tag.slug}`}
+                            className="poem-tag"
+                        >
+                            #{tag.name}
+                        </Link>
+
+                    ))}
+
+                </div>
+
+            )}
+
             <div className="poem-content">
 
                 {poem.content}
@@ -106,3 +127,4 @@ function PoemPage() {
 }
 
 export default PoemPage;
+

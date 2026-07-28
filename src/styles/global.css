@@ -285,6 +285,43 @@ nav {
 
 }
 
+.poem-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.poem-tag {
+    display: inline-block;
+    padding: 5px 9px;
+    border: 1px solid var(--border);
+    color: var(--secondary-text);
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.poem-tag:hover {
+    border-color: var(--text);
+    color: var(--text);
+}
+
+.poem-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.poem-tag {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.poem-tag:hover {
+    color: var(--text);
+}
 
 .poem-card-footer {
 

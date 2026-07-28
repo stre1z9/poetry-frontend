@@ -24,7 +24,24 @@ function PoemCard({ poem }) {
                 </p>
 
             )}
+            {poem.tags && poem.tags.length > 0 && (
 
+                <div className="poem-card-tags">
+
+                    {poem.tags.map(tag => (
+
+                        <span
+                            key={tag.id}
+                            className="poem-tag"
+                        >
+                            #{tag.name}
+                        </span>
+
+                    ))}
+
+                </div>
+
+            )}
             <div className="poem-card-footer">
 
                 <span>

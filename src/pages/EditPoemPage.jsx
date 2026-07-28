@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { createSlug } from "../utils/slug.js";
 
 import {
     createPoem,
     getPoemById,
-    updatePoem
+    updatePoem,
+    getTags,
+    createTag
 } from "../services/poemService";
 
 function EditPoemPage() {
@@ -16,62 +19,72 @@ function EditPoemPage() {
     const isEdit = id !== undefined;
 
     const [loading, setLoading] = useState(isEdit);
+    const [tags, setTags] = useState([]);
+
+    const [newTagName, setNewTagName] = useState("");
+    const [tagError, setTagError] = useState("");
+    const [creatingTag, setCreatingTag] = useState(false);
 
     const [form, setForm] = useState({
         title: "",
         slug: "",
         description: "",
         content: "",
-        published: false
+        published: false,
+        tags: []
     });
 
     useEffect(() => {
 
-        if (!isEdit) {
-            return;
+        async function loadData() {
+
+            try {
+
+                const availableTags = await getTags();
+
+                setTags(availableTags);
+
+                if (isEdit) {
+
+                    const poem = await getPoemById(id);
+
+                    setForm({
+                        title: poem.title,
+                        slug: poem.slug,
+                        description: poem.description || "",
+                        content: poem.content,
+                        published: poem.published,
+                        tags: poem.tags
+                            ? poem.tags.map(tag => tag.slug)
+                            : []
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
         }
 
-        loadPoem();
+        loadData();
 
-    }, []);
+    }, [id, isEdit]);
 
-    async function loadPoem() {
-
-        try {
-
-            const poem = await getPoemById(id);
-
-            setForm({
-                title: poem.title,
-                slug: poem.slug,
-                description: poem.description,
-                content: poem.content,
-                published: poem.published
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    }
-    function createSlug(text) {
-
-        return text
-            .toLowerCase()
-            .trim()
-            .replace(/\s+/g, "-")
-            .replace(/[^\w-]/g, "");
-
-    }
     function handleChange(event) {
 
-        const { name, value, type, checked } = event.target;
+        const {
+            name,
+            value,
+            type,
+            checked
+        } = event.target;
 
         setForm(previous => {
 
@@ -94,6 +107,105 @@ function EditPoemPage() {
             return updated;
 
         });
+
+    }
+
+    function handleTagChange(slug) {
+
+        setForm(previous => {
+
+            const selected = previous.tags.includes(slug);
+
+            return {
+
+                ...previous,
+
+                tags: selected
+                    ? previous.tags.filter(tag => tag !== slug)
+                    : [...previous.tags, slug]
+
+            };
+
+        });
+
+    }
+
+    function handleNewTagChange(event) {
+
+        setNewTagName(event.target.value);
+
+        if (tagError) {
+
+            setTagError("");
+
+        }
+
+    }
+
+    async function handleCreateTag() {
+
+        const name = newTagName.trim();
+
+        if (!name) {
+
+            setTagError("Введите название тега.");
+
+            return;
+
+        }
+
+        const existingTag = tags.find(
+            tag => tag.name.toLowerCase() === name.toLowerCase()
+        );
+
+        if (existingTag) {
+
+            setTagError("Такой тег уже существует.");
+
+            return;
+
+        }
+
+        setCreatingTag(true);
+        setTagError("");
+
+        try {
+
+            const slug = createSlug(name);
+
+            const createdTag = await createTag({
+                name,
+                slug
+            });
+
+            setTags(previous => [
+                ...previous,
+                createdTag
+            ]);
+
+            setForm(previous => ({
+                ...previous,
+                tags: [
+                    ...previous.tags,
+                    createdTag.slug
+                ]
+            }));
+
+            setNewTagName("");
+
+        } catch (error) {
+
+            console.error(error);
+
+            setTagError(
+                "Не удалось создать тег."
+            );
+
+        } finally {
+
+            setCreatingTag(false);
+
+        }
 
     }
 
@@ -149,10 +261,9 @@ function EditPoemPage() {
 
                         <label
                             htmlFor="title"
-                            className="form-label">
-
+                            className="form-label"
+                        >
                             Название
-
                         </label>
 
                         <input
@@ -171,10 +282,9 @@ function EditPoemPage() {
 
                         <label
                             htmlFor="slug"
-                            className="form-label">
-
+                            className="form-label"
+                        >
                             Slug
-
                         </label>
 
                         <input
@@ -188,9 +298,7 @@ function EditPoemPage() {
                         />
 
                         <div className="form-text">
-
                             Используется в адресе страницы.
-
                         </div>
 
                     </div>
@@ -199,10 +307,9 @@ function EditPoemPage() {
 
                         <label
                             htmlFor="description"
-                            className="form-label">
-
+                            className="form-label"
+                        >
                             Краткое описание
-
                         </label>
 
                         <textarea
@@ -221,10 +328,9 @@ function EditPoemPage() {
 
                         <label
                             htmlFor="content"
-                            className="form-label">
-
+                            className="form-label"
+                        >
                             Текст стихотворения
-
                         </label>
 
                         <textarea
@@ -236,6 +342,100 @@ function EditPoemPage() {
                             onChange={handleChange}
                             placeholder="Введите текст стихотворения..."
                         />
+
+                    </div>
+
+                    <div className="mb-4">
+
+                        <label className="form-label">
+                            Теги
+                        </label>
+
+                        {tags.length === 0 ? (
+
+                            <p className="text-muted">
+                                Тегов пока нет.
+                            </p>
+
+                        ) : (
+
+                            <div className="d-flex flex-column gap-2 mb-3">
+
+                                {tags.map(tag => (
+
+                                    <div
+                                        key={tag.id}
+                                        className="form-check"
+                                    >
+
+                                        <input
+                                            id={`tag-${tag.id}`}
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            checked={form.tags.includes(tag.slug)}
+                                            onChange={() =>
+                                                handleTagChange(tag.slug)
+                                            }
+                                        />
+
+                                        <label
+                                            htmlFor={`tag-${tag.id}`}
+                                            className="form-check-label"
+                                        >
+                                            {tag.name}
+                                        </label>
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        )}
+
+                        <div className="mt-3">
+
+                            <label
+                                htmlFor="newTag"
+                                className="form-label"
+                            >
+                                Создать новый тег
+                            </label>
+
+                            <div className="d-flex gap-2">
+
+                                <input
+                                    id="newTag"
+                                    type="text"
+                                    className="form-control"
+                                    value={newTagName}
+                                    onChange={handleNewTagChange}
+                                    placeholder="Например: Любовь"
+                                    disabled={creatingTag}
+                                />
+
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-dark"
+                                    onClick={handleCreateTag}
+                                    disabled={creatingTag}
+                                >
+                                    {creatingTag
+                                        ? "Создание..."
+                                        : "Создать"}
+                                </button>
+
+                            </div>
+
+                            {tagError && (
+
+                                <div className="text-danger mt-2">
+                                    {tagError}
+                                </div>
+
+                            )}
+
+                        </div>
 
                     </div>
 
@@ -252,10 +452,9 @@ function EditPoemPage() {
 
                         <label
                             htmlFor="published"
-                            className="form-check-label">
-
+                            className="form-check-label"
+                        >
                             Опубликовать сразу
-
                         </label>
 
                     </div>
@@ -265,20 +464,18 @@ function EditPoemPage() {
                         <button
                             type="button"
                             className="btn btn-outline-secondary"
-                            onClick={() => navigate("/admin")}>
-
+                            onClick={() => navigate("/admin")}
+                        >
                             Отмена
-
                         </button>
 
                         <button
                             type="submit"
-                            className="btn btn-dark">
-
+                            className="btn btn-dark"
+                        >
                             {isEdit
                                 ? "Сохранить изменения"
                                 : "Создать стихотворение"}
-
                         </button>
 
                     </div>
@@ -294,3 +491,4 @@ function EditPoemPage() {
 }
 
 export default EditPoemPage;
+

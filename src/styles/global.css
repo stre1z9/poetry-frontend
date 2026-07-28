@@ -113,10 +113,6 @@ nav {
 
 }
 
-back {
-    color: var(--secondary-text);
-}
-
 .nav-link-custom {
 
     color: var(--secondary-text);
@@ -471,6 +467,9 @@ back {
 
 }
 
+.back {
+    color: var(--secondary-text);
+}
 
 .poem-date {
 

@@ -68,7 +68,7 @@ function PoemPage() {
     return (
 
         <article className="poem">
-            <Link to={`/poems`}>Назад</Link>
+            <Link to={`/poems`} className="back">← Назад</Link>
             <h1 className="poem-title">
 
                 {poem.title}

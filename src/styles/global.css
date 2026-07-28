@@ -113,6 +113,9 @@ nav {
 
 }
 
+back {
+    color: var(--secondary-text);
+}
 
 .nav-link-custom {
 

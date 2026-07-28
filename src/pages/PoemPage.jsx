@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 import { getPoem } from "../services/poemService";
 
@@ -68,7 +68,7 @@ function PoemPage() {
     return (
 
         <article className="poem">
-
+            <Link to={`/poems`}>Назад</Link>
             <h1 className="poem-title">
 
                 {poem.title}

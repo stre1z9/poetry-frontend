@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 import PoemCard from "../components/PoemCard";
 import {
@@ -78,6 +78,12 @@ function TagPage() {
     return (
 
         <section>
+            <Link
+                to="/poems"
+                className="back"
+            >
+                ← Назад
+            </Link>
 
             <h1 className="section-title">
                 #{tag.name}

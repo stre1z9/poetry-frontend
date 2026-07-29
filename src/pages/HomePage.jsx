@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import PoemCard from "../components/PoemCard";
 import { getPoems } from "../services/poemService";
+import HeroTitle from "../components/HeroTitle.jsx";
 
 function HomePage() {
 
@@ -53,9 +54,7 @@ function HomePage() {
 
             <section className="hero">
 
-                <h1 className="hero-title">
-                    Poetry.
-                </h1>
+                <HeroTitle/>
 
                 <p className="hero-description">
 
@@ -69,7 +68,7 @@ function HomePage() {
 
 
             <section>
-
+                <h2>Последние произведения</h2>
                 <div className="home-poem-grid">
 
                     {latestPoems.map(poem => (

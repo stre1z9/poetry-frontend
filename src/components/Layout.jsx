@@ -23,7 +23,7 @@ function Layout() {
                     </div>
                 </div>
             </header>
-            <main className="container py-5">
+            <main className="container py-5 page-content">
                 <Outlet />
             </main>
         </>

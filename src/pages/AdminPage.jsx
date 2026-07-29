@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { getAdminPoems, deletePoem } from "../services/poemService";
+import {
+    getAdminPoems,
+    deletePoem
+} from "../services/poemService";
 
 function AdminPage() {
 
@@ -9,7 +12,9 @@ function AdminPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         loadPoems();
+
     }, []);
 
     async function loadPoems() {
@@ -35,7 +40,7 @@ function AdminPage() {
     async function handleDelete(id) {
 
         const confirmed = window.confirm(
-            "Удалить стихотворение?"
+            "Вы действительно хотите удалить это стихотворение?"
         );
 
         if (!confirmed) {
@@ -46,7 +51,12 @@ function AdminPage() {
 
             await deletePoem(id);
 
-            loadPoems();
+            setPoems(
+                currentPoems =>
+                    currentPoems.filter(
+                        poem => poem.id !== id
+                    )
+            );
 
         } catch (error) {
 
@@ -57,109 +67,194 @@ function AdminPage() {
     }
 
     if (loading) {
-        return <h3>Загрузка...</h3>;
+
+        return (
+            <div className="admin-loading">
+                Загрузка...
+            </div>
+        );
+
     }
-    console.log("poems:", poems);
-    console.log("isArray:", Array.isArray(poems));
+
     return (
 
-        <>
+        <section className="admin-page">
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="admin-header">
 
-                <h1>Администрирование</h1>
+                <div>
 
-                <Link
-                    to="/admin/new"
-                    className="btn btn-dark">
+                    <p className="admin-eyebrow">
+                        Панель управления
+                    </p>
 
-                    Новое стихотворение
+                    <h1 className="admin-title">
+                        Администрирование
+                    </h1>
 
-                </Link>
+                    <p className="admin-description">
+                        Управление стихотворениями и комментариями.
+                    </p>
+
+                </div>
+
+                <div className="admin-actions">
+
+                    <Link
+                        to="/admin/comments"
+                        className="btn btn-outline-dark"
+                    >
+                        Комментарии
+                    </Link>
+
+                    <Link
+                        to="/admin/new"
+                        className="btn btn-dark"
+                    >
+                        Новое стихотворение
+                    </Link>
+
+                </div>
 
             </div>
 
-            {poems.length === 0 && (
+            <div className="admin-divider" />
 
-                <p>Стихотворений пока нет.</p>
+            {poems.length === 0 ? (
 
-            )}
+                <div className="admin-empty">
 
-            <div className="d-flex flex-column gap-3">
+                    <h3>
+                        Стихотворений пока нет
+                    </h3>
 
-                {poems.map(poem => (
+                    <p>
+                        Создайте первое стихотворение,
+                        чтобы оно появилось здесь.
+                    </p>
 
-                    <div
-                        key={poem.id}
-                        className="card">
+                    <Link
+                        to="/admin/new"
+                        className="btn btn-dark"
+                    >
+                        Создать стихотворение
+                    </Link>
 
-                        <div className="card-body">
+                </div>
 
-                            <div className="d-flex justify-content-between">
+            ) : (
 
-                                <div>
+                <div className="admin-poems">
 
-                                    <h4>
+                    {poems.map(poem => (
 
-                                        {poem.title}
+                        <article
+                            key={poem.id}
+                            className="admin-poem"
+                        >
 
-                                    </h4>
+                            <div className="admin-poem-main">
 
-                                    <p className="text-muted">
+                                <div className="admin-poem-meta">
 
-                                        {poem.description}
+                                    <span className={
+                                        poem.published
+                                            ? "admin-status published"
+                                            : "admin-status draft"
+                                    }>
 
-                                    </p>
-
-                                    <small>
+                                        <span className="admin-status-dot" />
 
                                         {poem.published
-                                            ? "🟢 Опубликовано"
-                                            : "⚪ Черновик"}
+                                            ? "Опубликовано"
+                                            : "Черновик"}
 
-                                    </small>
+                                    </span>
 
-                                </div>
+                                    {poem.createdAt && (
 
-                                <div className="d-flex gap-2 align-items-start">
-                                    <Link
-                                        to="/admin/new"
-                                        className="btn btn-dark"
-                                    >
-                                        Новое стихотворение
-                                    </Link>
-                                    <Link
-                                        to={`/admin/edit/${poem.id}`}
-                                        className="btn btn-outline-primary">
+                                        <span className="admin-poem-date">
 
-                                        Редактировать
+                                            {new Date(
+                                                poem.createdAt
+                                            ).toLocaleDateString(
+                                                "ru-RU"
+                                            )}
 
-                                    </Link>
+                                        </span>
 
-                                    <button
-                                        onClick={() => handleDelete(poem.id)}
-                                        className="btn btn-outline-danger">
-
-                                        Удалить
-
-                                    </button>
+                                    )}
 
                                 </div>
+
+                                <h2 className="admin-poem-title">
+                                    {poem.title}
+                                </h2>
+
+                                {poem.description && (
+
+                                    <p className="admin-poem-description">
+                                        {poem.description}
+                                    </p>
+
+                                )}
+
+                                {poem.tags &&
+                                    poem.tags.length > 0 && (
+
+                                    <div className="admin-poem-tags">
+
+                                        {poem.tags.map(tag => (
+
+                                            <span
+                                                key={tag.id}
+                                                className="admin-poem-tag"
+                                            >
+                                                #{tag.name}
+                                            </span>
+
+                                        ))}
+
+                                    </div>
+
+                                )}
 
                             </div>
 
-                        </div>
+                            <div className="admin-poem-actions">
 
-                    </div>
+                                <Link
+                                    to={`/admin/edit/${poem.id}`}
+                                    className="btn btn-outline-dark"
+                                >
+                                    Редактировать
+                                </Link>
 
-                ))}
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handleDelete(poem.id)
+                                    }
+                                    className="btn btn-outline-danger"
+                                >
+                                    Удалить
+                                </button>
 
-            </div>
+                            </div>
 
-        </>
+                        </article>
+
+                    ))}
+
+                </div>
+
+            )}
+
+        </section>
 
     );
 
 }
 
 export default AdminPage;
+

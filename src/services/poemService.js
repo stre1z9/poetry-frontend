@@ -89,4 +89,51 @@ export async function createTag(tag) {
     return response.data;
 
 }
+export async function getComments(slug) {
 
+    const response = await api.get(
+        `/poems/${slug}/comments`
+    );
+
+    return response.data;
+
+}
+
+export async function createComment(slug, comment) {
+
+    const response = await api.post(
+        `/poems/${slug}/comments`,
+        comment
+    );
+
+    return response.data;
+
+}
+
+export async function getAdminComments() {
+
+    const response = await api.get(
+        "/admin/comments"
+    );
+
+    return response.data;
+
+}
+
+export async function approveComment(id) {
+
+    const response = await api.patch(
+        `/admin/comments/${id}/approve`
+    );
+
+    return response.data;
+
+}
+
+export async function deleteComment(id) {
+
+    await api.delete(
+        `/admin/comments/${id}`
+    );
+
+}
